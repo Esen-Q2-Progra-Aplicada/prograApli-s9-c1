@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, redirect, session
 
 
 class PizzaOrderRoutes:
@@ -9,4 +9,24 @@ class PizzaOrderRoutes:
             if request.method == "GET":
                 return render_template("size.html")
             elif request.method == "POST":
-                return "posted"
+                selectedSize = request.form["size"]
+                session["size"] = selectedSize
+                return redirect("flavor")
+
+        @app.route("/flavor", methods=["GET", "POST"])
+        def flavor():
+            if request.method == "GET":
+                return render_template("flavor.html")
+            elif request.method == "POST":
+                selectedFlavor = request.form["flavor"]
+                session["flavor"] = selectedFlavor
+                return redirect("complement")
+
+        @app.route("/complement", methods=["GET", "POST"])
+        def complement():
+            if request.method == "GET":
+                return render_template("complement.html")
+            elif request.method == "POST":
+                selectedComplement = request.form["complement"]
+                session["complement"] = selectedComplement
+                return f"flavor posted {session['size']} {session['flavor']} {selectedComplement}"
