@@ -29,4 +29,14 @@ class PizzaOrderRoutes:
             elif request.method == "POST":
                 selectedComplement = request.form["complement"]
                 session["complement"] = selectedComplement
-                return f"flavor posted {session['size']} {session['flavor']} {selectedComplement}"
+                return redirect("extra")
+
+        @app.route("/extra", methods=["GET", "POST"])
+        def extra():
+            if request.method == "GET":
+                return render_template("extra.html")
+            elif request.method == "POST":
+                extraString = request.form.getlist("extra")
+                print(extraString)
+                session["extra"] = extraString
+                return f"extra posted"
